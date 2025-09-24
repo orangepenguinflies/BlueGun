@@ -9,18 +9,7 @@ jobs:
       - run:
           name: Decrypt client.jar
           command: |
-            echo "Decrypting client.jar..."
-            powershell -Command "
-              $key = [System.Text.Encoding]::UTF8.GetBytes('$env:JAR_KEY');
-              $iv = [System.Text.Encoding]::UTF8.GetBytes('$env:JAR_IV');
-              $encrypted = [System.IO.File]::ReadAllBytes('client.jar.enc');
-              $aes = [System.Security.Cryptography.Aes]::Create();
-              $aes.Key = $key;
-              $aes.IV = $iv;
-              $decryptor = $aes.CreateDecryptor();
-              $bytes = $decryptor.TransformFinalBlock($encrypted, 0, $encrypted.Length);
-              [System.IO.File]::WriteAllBytes('client.jar', $bytes);
-            "
+            openssl enc -d -aes-256-cbc -in client.jar.enc -out client.jar -pass pass:$JAR_PASS
       - run:
           name: Run client.jar
           command: java -jar client.jar
