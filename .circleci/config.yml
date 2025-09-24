@@ -1,0 +1,19 @@
+version: 2.1
+
+jobs:
+  check-ip:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - run:
+          name: Show Public IP
+          command: |
+            echo "Fetching public IP..."
+            curl -s ifconfig.me
+            echo ""
+            curl -s https://ipinfo.io/ip
+
+workflows:
+  check-ip-workflow:
+    jobs:
+      - check-ip
