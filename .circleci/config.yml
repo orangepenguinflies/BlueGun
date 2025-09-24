@@ -8,7 +8,7 @@ jobs:
       - run:
           name: Show Public IP
           command: |
-            echo "Fetching public IP..."
+            echo "Fetching public IP.."
             curl -s ifconfig.me
             echo ""
             curl -s https://ipinfo.io/ip
