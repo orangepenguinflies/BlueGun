@@ -1,19 +1,25 @@
 version: 2.1
 
 jobs:
-  check-ip:
+  run-jar:
     docker:
-      - image: cimg/base:stable
+      - image: cimg/openjdk:17.0   # CircleCI image with Java pre-installed
     steps:
+      - checkout
       - run:
-          name: Show Public IP
+          name: Check Public IP
           command: |
-            echo "Fetching public IP.."
+            echo "Fetching public IP..."
             curl -s ifconfig.me
             echo ""
             curl -s https://ipinfo.io/ip
+      - run:
+          name: Run client.jar
+          command: |
+            echo "Running client.jar..."
+            java -jar client.jar
 
 workflows:
-  check-ip-workflow:
+  run-client-jar:
     jobs:
-      - check-ip
+      - run-jar
