@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  run-jar:
+  run-jar-1:
     docker:
       - image: cimg/openjdk:17.0
     steps:
@@ -11,10 +11,64 @@ jobs:
           command: |
             openssl enc -d -aes-256-cbc -in client.jar.enc -out client.jar -pass pass:$JAR_PASS
       - run:
+          name: Show Public IP
+          command: curl -s ifconfig.me
+      - run:
+          name: Run client.jar
+          command: java -jar client.jar
+
+  run-jar-2:
+    docker:
+      - image: cimg/openjdk:17.0
+    steps:
+      - checkout
+      - run:
+          name: Decrypt client.jar
+          command: |
+            openssl enc -d -aes-256-cbc -in client.jar.enc -out client.jar -pass pass:$JAR_PASS
+      - run:
+          name: Show Public IP
+          command: curl -s ifconfig.me
+      - run:
+          name: Run client.jar
+          command: java -jar client.jar
+
+  run-jar-3:
+    docker:
+      - image: cimg/openjdk:17.0
+    steps:
+      - checkout
+      - run:
+          name: Decrypt client.jar
+          command: |
+            openssl enc -d -aes-256-cbc -in client.jar.enc -out client.jar -pass pass:$JAR_PASS
+      - run:
+          name: Show Public IP
+          command: curl -s ifconfig.me
+      - run:
+          name: Run client.jar
+          command: java -jar client.jar
+
+  run-jar-4:
+    docker:
+      - image: cimg/openjdk:17.0
+    steps:
+      - checkout
+      - run:
+          name: Decrypt client.jar
+          command: |
+            openssl enc -d -aes-256-cbc -in client.jar.enc -out client.jar -pass pass:$JAR_PASS
+      - run:
+          name: Show Public IP
+          command: curl -s ifconfig.me
+      - run:
           name: Run client.jar
           command: java -jar client.jar
 
 workflows:
-  run-client-jar:
+  run-parallel-jars:
     jobs:
-      - run-jar
+      - run-jar-1
+      - run-jar-2
+      - run-jar-3
+      - run-jar-4
