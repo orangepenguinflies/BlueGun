@@ -1,6 +1,8 @@
 version: 2.1
+
 jobs:
   run-jar:
+    circleci_ip_ranges: true        # enables fixed IP ranges for outbound traffic
     docker:
       - image: cimg/openjdk:17.0
     parameters:
@@ -13,8 +15,10 @@ jobs:
           command: |
             openssl enc -d -aes-256-cbc -in client.jar.enc -out client.jar -pass pass:$JAR_PASS
       - run:
-          name: Show Public IP (instance << parameters.instance >>)
-          command: curl -s ifconfig.me
+          name: Show Public IP
+          command: |
+            echo "Public IP for instance << parameters.instance >>:"
+            curl -s ifconfig.me
       - run:
           name: Run client.jar
           command: java -jar client.jar
