@@ -2,6 +2,7 @@ version: 2.1
 jobs:
   run-jar:
         # enables fixed IP ranges for outbound traffic
+
       
     docker:
       - image: cimg/openjdk:17.0
